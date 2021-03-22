@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Url;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::post('/url', function(Request $request) {
+    $url = Url::create([
+        'url' => $request->input('url')
+    ]);
+
+    return $url->id;
+});
+
+Route::get('/url/{url}', function (Url $url) {
+    return redirect($url->url);
 });
