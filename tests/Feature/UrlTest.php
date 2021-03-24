@@ -18,16 +18,14 @@ class UrlTest extends TestCase
     {
         $url = 'https://www.google.com';
         $response = $this->post('/url', ['url' => $url]);
-        
-        $response->assertStatus(200);
 
         $this->assertDatabaseHas('urls', [
             'url' => $url
         ]);
 
         $row = Url::where('url', $url)->first();
-
-        $response->assertSee($row->id);
+        
+        $response->assertRedirect(route('home'), [], ['urlId' => $row->id]);
     }
 
     public function test_we_redirect_users_to_url()

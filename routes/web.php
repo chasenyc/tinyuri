@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $urlId = session()->get('urlId', null);
+    $urlId = session()->get('urlId');
     return view('urls.create', ['urlId' => $urlId]);
 })->name('home');
 
@@ -26,7 +26,6 @@ Route::post('/url', function(Request $request) {
     ]);
 
     return redirect(route('home'))->with(['urlId' => $url->id]);
-    // return $url->id;
 })->name('create');
 
 Route::get('/url/{url}', function (Url $url) {

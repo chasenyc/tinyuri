@@ -16,7 +16,7 @@
         </form>
 
         @if ($urlId)
-            <p>{{ route('shortened', $urlId) }}</p>
+            <p>{{ route('shortened', ['url' => $urlId]) }}</p>
         @endif
     </body>
 </html>

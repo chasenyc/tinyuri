@@ -407,3 +407,86 @@ Named routes give a nice benefit of both resolving full paths automatically as w
 ```
 
 After we have done this we should now successfully be able to create a shortened url; however the experience is less than ideal right now. Ideally we want to be redirected back to the original page with a success message and the url for the shortened link.
+
+To do this we need to change our post endpoint from returning data directly to redirecting back to our root url with some basic data. We are going to need to use Laravel's [redirect with session data](https://laravel.com/docs/8.x/responses#redirecting-with-flashed-session-data):
+
+```php
+// web.php
+Route::get('/', function () {
+    $urlId = session()->get('urlId');
+    return view('urls.create', ['urlId' => $urlId]);
+})->name('home');
+
+Route::post('/url', function(Request $request) {
+    $url = Url::create([
+        'url' => $request->input('url')
+    ]);
+
+    return redirect(route('home'))->with(['urlId' => $url->id]);
+})->name('create');
+```
+
+with these updated routes we are now redirecting the user back to the root url where the user submitted their url with the id of their submitted url stored in session data. We have named our root url as `home` and we are getting that data and passing it to the view with the following code:
+
+```php
+$urlId = session()->get('urlId');
+return view('urls.create', ['urlId' => $urlId]);
+```
+
+If we run our tests again at this point they will now not all pass. We have changed the expected effect of our create url endpoint and we should update our test to reflect it. We still want to ensure that a new row is created in the database, but we now want to ensure we are redirected to the correct place and that the correct data is passed in the user's session.
+
+```php
+// tests/Feature/UrlTest.php
+
+public function test_we_create_a_url_record()
+{
+    $url = 'https://www.google.com';
+    $response = $this->post('/url', ['url' => $url]);
+
+    $this->assertDatabaseHas('urls', [
+        'url' => $url
+    ]);
+
+    $row = Url::where('url', $url)->first();
+    
+    $response->assertRedirect(route('home'), [], ['urlId' => $row->id]);
+}
+```
+
+if we now add to our `create.blade.php` the following we should see some data after creating a url:
+
+```html
+@if ($urlId)
+    <p>{{ $urlId }}</p>
+@endif
+```
+
+If we have done everything right we should now see the following:
+
+{{screenshot05}}
+
+We are getting very close, we now have the id but to an end user this is not a great experience, we really want to display to the user the full url they need to get their redirect working. We are going to need one last named route:
+
+```php
+// web.php
+Route::get('/url/{url}', function (Url $url) {
+    return redirect($url->url);
+})->name('shortened');
+```
+
+And with the `shortened` name for that route we can use the second parameter of the `route()` function to pass in an id and form a full url:
+
+```html
+@if ($urlId)
+    <p>{{ route('shortened', ['url' => $urlId]) }}</p>
+@endif
+```
+
+If we go through the process one more time we should now see a fully formed url! Congratulations, we have our most basic MVP of our product. It is not pretty but it is completely functional, its possible going through this process has piqued some ideas about other features or shortcomings of what we currently have. There are few items that came to my mind while going through this process, the first and most glaring being that our shortened urls are just numbers. Here is a list of a few things that come to mind immediately:
+
+1. Shortened urls are just numbers and will not stay short for nearly as long as if letters were included.
+2. There is no validation when submitting a url
+3. Would be nice to be able to have a user and see all redirects created
+4. Would be nice to be able to see how many people have visited your shortened link
+5. There is no styling, basically our site is very ugly
+6. It would be great to allow for custom vanity urls
