@@ -351,4 +351,59 @@ php artisan serve
 Starting Laravel development server: http://127.0.0.1:8000
 [Sun Mar 21 18:11:36 2021] PHP 7.4.13 Development Server (http://127.0.0.1:8000) started
 ```
-and visit `http://127.0.0.1:8000/url/1` we will be redirected to google!
+and visit `http://127.0.0.1:8000/url/1` we will be redirected to google! We now have almost a full MVP of our url shortener, all that is left is adding the frontend code.
+
+### Creating the basic frontend
+The first thing we are going to need to do is create a basic page with a form to submit urls. We are going to create a new view to let users submit their urls.
+
+The first thing we are going to have to do is create a new file `views/urls/create.blade.php`. We are going to put some basic html in the blade:
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Shorten a link</title>
+    </head>
+    <body>
+        It works!
+    </body>
+</html>
+```
+
+we are now going to hook this up to our root url by adjusting `web.php` to go from rendering the `welcome` view to our new `urls.create`:
+
+```php
+Route::get('/', function () {
+    return view('urls.create');
+});
+```
+
+While we are in here we are also going to add a name to our route we use to create our urls like so:
+```php
+Route::post('/url', function(Request $request) {
+    $url = Url::create([
+        'url' => $request->input('url')
+    ]);
+
+    return $url->id;
+})->name('create');
+```
+Named routes give a nice benefit of both resolving full paths automatically as well as remaining constant even if the url changes. It will help us with our form creation. If we refresh `localhost:8000` now we should see our "It works!" in the browser. Next we just need to add a form that will post to our desired endpoint.
+
+```html
+<!-- views/urls/create.blade.php -->
+
+<body>
+    <form method="POST" action="{{ route('create') }}">
+        @csrf
+        <label for="url-input">URL:
+            <input id="url-input" type="text" name="url">
+        </label>
+        <button>Submit</button>
+    </form>
+</body>
+```
+
+After we have done this we should now successfully be able to create a shortened url; however the experience is less than ideal right now. Ideally we want to be redirected back to the original page with a success message and the url for the shortened link.

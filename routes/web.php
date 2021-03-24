@@ -16,17 +16,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $urlId = session()->get('urlId', null);
+    return view('urls.create', ['urlId' => $urlId]);
+})->name('home');
 
 Route::post('/url', function(Request $request) {
     $url = Url::create([
         'url' => $request->input('url')
     ]);
 
-    return $url->id;
-});
+    return redirect(route('home'))->with(['urlId' => $url->id]);
+    // return $url->id;
+})->name('create');
 
 Route::get('/url/{url}', function (Url $url) {
     return redirect($url->url);
-});
+})->name('shortened');
