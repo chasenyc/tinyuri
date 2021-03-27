@@ -25,7 +25,7 @@ Route::post('/url', function(Request $request) {
         'url' => $request->input('url')
     ]);
 
-    return redirect(route('home'))->with(['urlId' => $url->id]);
+    return redirect(route('home'))->with(['urlId' => $url->base62id()]);
 })->name('create');
 
 Route::get('/url/{url}', function (Url $url) {
