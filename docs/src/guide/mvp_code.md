@@ -1,5 +1,5 @@
-## Getting Started with Code
-### Creating the model
+# Getting Started with Code
+## Creating the model
 The first thing we are going to want to do is make our data model, like most modern frameworks, Laravel comes with some very robust database migration tools. You can read more about database migrations and how to use them [here](laravel.com/docs/8.x/migrations). So our first and only table right now is going to be the `urls` table and we will create it by using the `php artisan` command:
 
 ```sh
@@ -94,7 +94,7 @@ class Url extends Model
 }
 ```
 
-### Creating a test
+## Creating a test
 
 Before we continue any further with our application we are going to write a test for the expected behavior of our application. We are going to go to the `tests/Feature` folder and create a new file called `UrlTest.php`, we can do this manually or we can use the corresponding artisan command for it:
 ```sh
@@ -231,7 +231,7 @@ abstract class TestCase extends BaseTestCase
 ```
 And now when I run my tests one more time it is working as expected. We now have an endpoint that generates a `url` model and returns the `id`!
 
-### Creating our second test and endpoint
+## Creating our second test and endpoint
 
 Now we need one more endpoint for our application which will redirect users to their desired destinations. We are going to create another test in the same `tests/UrlTest.php` file. We want to assert that if you visit `/url/{id}` it redirects the user to the expected url. In Laravel's [testing documentation](https://laravel.com/docs/8.x/http-tests#assert-redirect) we can see that there is a `assertRedirect` which will be exactly what we need:
 
@@ -276,7 +276,7 @@ Starting Laravel development server: http://127.0.0.1:8000
 ```
 and visit `http://127.0.0.1:8000/url/1` we will be redirected to google! We now have almost a full MVP of our url shortener, all that is left is adding the frontend code.
 
-### Creating the basic frontend
+## Creating the basic frontend
 The first thing we are going to need to do is create a basic page with a form to submit urls. We are going to create a new view to let users submit their urls.
 
 The first thing we are going to have to do is create a new file `views/urls/create.blade.php`. We are going to put some basic html in the blade:
@@ -372,7 +372,8 @@ public function test_we_create_a_url_record()
 
     $row = Url::where('url', $url)->first();
     
-    $response->assertRedirect(route('home'), [], ['urlId' => $row->id]);
+    $response->assertRedirect(route('home'));
+    $response->assertSessionHas(['urlId' => $row->id]);
 }
 ```
 
@@ -386,7 +387,7 @@ if we now add to our `create.blade.php` the following we should see some data af
 
 If we have done everything right we should now see the following:
 
-{{screenshot05}}
+<img :src="$withBase('/05_website_mvp_pre.png')" alt="website mvp">
 
 We are getting very close, we now have the id but to an end user this is not a great experience, we really want to display to the user the full url they need to get their redirect working. We are going to need one last named route:
 
@@ -404,8 +405,11 @@ And with the `shortened` name for that route we can use the second parameter of 
     <p>{{ route('shortened', ['url' => $urlId]) }}</p>
 @endif
 ```
+If we go through the process one more time we should now see a fully formed url! Congratulations, we have our most basic MVP of our product. It is not pretty but it is completely functional, its possible going through this process has piqued some ideas about other features or shortcomings of what we currently have. 
 
-If we go through the process one more time we should now see a fully formed url! Congratulations, we have our most basic MVP of our product. It is not pretty but it is completely functional, its possible going through this process has piqued some ideas about other features or shortcomings of what we currently have. There are few items that came to my mind while going through this process, the first and most glaring being that our shortened urls are just numbers. Here is a list of a few things that come to mind immediately:
+## What's next
+
+There are few items that came to my mind while going through this process, the first and most glaring being that our shortened urls are just numbers. Here is a list of a few things that come to mind immediately:
 
 1. Shortened urls are just numbers and will not stay short for nearly as long as if letters were included.
 2. There is no validation when submitting a url
