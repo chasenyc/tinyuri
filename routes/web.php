@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Url;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UrlController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,13 +20,7 @@ Route::get('/', function () {
     return view('urls.create', ['urlId' => $urlId]);
 })->name('home');
 
-Route::post('/url', function(Request $request) {
-    $url = Url::create([
-        'url' => $request->input('url')
-    ]);
-
-    return redirect(route('home'))->with(['urlId' => $url->base62id()]);
-})->name('create');
+Route::post('/url', [UrlController::class, 'store'])->name('create');
 
 Route::get('/url/{url}', function (Url $url) {
     return redirect($url->url);

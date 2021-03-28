@@ -411,9 +411,9 @@ If we go through the process one more time we should now see a fully formed url!
 
 There are few items that came to my mind while going through this process, the first and most glaring being that our shortened urls are just numbers. Here is a list of a few things that come to mind immediately:
 
-1. Shortened urls are just numbers and will not stay short for nearly as long as if letters were included.
-2. There is no validation when submitting a url
-3. Would be nice to be able to have a user and see all redirects created
-4. Would be nice to be able to see how many people have visited your shortened link
-5. There is no styling, basically our site is very ugly
-6. It would be great to allow for custom vanity urls
+1. There is no styling, basically our site is very ugly
+2. Shortened urls are just numbers and will not stay short for nearly as long as if letters were included.
+3. There is no validation when submitting a url
+4. It would be great to allow for custom vanity urls
+5. Would be nice to be able to have a user and see all redirects created
+6. Would be nice to be able to see how many people have visited your shortened link

@@ -47,7 +47,9 @@ module.exports = {
             'setting_up',
             'mvp_design',
             'mvp_code',
-            'basic_style'
+            'basic_style',
+            'first_feature',
+            'cleanup'
           ]
         }
       ],

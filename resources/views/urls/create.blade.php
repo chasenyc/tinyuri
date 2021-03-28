@@ -19,8 +19,12 @@
             </form>
 
             @if ($urlId)
-                <p class="my-2 font-medium py-1 px-2 bg-white rounded-md text-green-700 bg-green-100 border border-green-300">{{ route('shortened', ['url' => $urlId]) }}</p>
+                <p class="success message">{{ route('shortened', ['url' => $urlId]) }}</p>
             @endif
+
+            @error('url')
+                <div class="error message">{{ $message }}</div>
+            @enderror
         </div>
     </body>
 </html>
