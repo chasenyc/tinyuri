@@ -30,6 +30,14 @@ class UrlTest extends TestCase
         $response->assertSessionHas(['urlId' => $row->base62id()]);
     }
 
+    public function test_we_return_an_error_for_invalid_url()
+    {
+        $url = 'google';
+        $response = $this->post('/url', ['url' => $url]);
+        $response->assertRedirect(route('home'));
+        $response->assertSessionHasErrors(['url']);
+    }
+
     public function test_we_redirect_users_to_url()
     {
         $url = Url::create(['url' => 'https://www.google.com']);

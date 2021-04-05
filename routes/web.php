@@ -1,8 +1,10 @@
 <?php
 
 use App\Models\Url;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UrlController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,14 +22,18 @@ Route::get('/', function () {
     return view('urls.create', ['urlId' => $urlId]);
 })->name('home');
 
-Route::post('/url', function(Request $request) {
-    $url = Url::create([
-        'url' => $request->input('url')
-    ]);
+Route::middleware(['unauthed'])->group(function () {
+    Route::get('/register', [RegisterController::class, 'create'])->name('register.create');
+    Route::post('/register', [RegisterController::class, 'store'])->name('register');
+    Route::get('/login', [LoginController::class, 'create'])->name('session.create');
+    Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
+});
 
-    return redirect(route('home'))->with(['urlId' => $url->base62id()]);
-})->name('create');
+Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+
+Route::post('/url', [UrlController::class, 'store'])->name('create');
 
 Route::get('/url/{url}', function (Url $url) {
     return redirect($url->url);
 })->name('shortened');
+
