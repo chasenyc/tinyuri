@@ -231,6 +231,14 @@ abstract class TestCase extends BaseTestCase
 ```
 And now when I run my tests one more time it is working as expected. We now have an endpoint that generates a `url` model and returns the `id`!
 
+::: tip
+By default phpunit is going to use the same database as your application locally. If you use `RefreshDatabase` this will wipe out all your local data everytime you run your tests. It is highly recommended you create a second database like `tinyuri_test` and update your `phpunit.xml` file like so:
+```xml
+<server name="DB_CONNECTION" value="mysql"/>
+<server name="DB_DATABASE" value="tinyuri_test"/>
+```
+:::
+
 ## Creating our second test and endpoint
 
 Now we need one more endpoint for our application which will redirect users to their desired destinations. We are going to create another test in the same `tests/UrlTest.php` file. We want to assert that if you visit `/url/{id}` it redirects the user to the expected url. In Laravel's [testing documentation](https://laravel.com/docs/8.x/http-tests#assert-redirect) we can see that there is a `assertRedirect` which will be exactly what we need:
@@ -414,6 +422,6 @@ There are few items that came to my mind while going through this process, the f
 1. There is no styling, basically our site is very ugly
 2. Shortened urls are just numbers and will not stay short for nearly as long as if letters were included.
 3. There is no validation when submitting a url
-4. It would be great to allow for custom vanity urls
-5. Would be nice to be able to have a user and see all redirects created
-6. Would be nice to be able to see how many people have visited your shortened link
+4. Would be nice to be able to have a user and see all redirects created
+5. Would be nice to be able to see how many people have visited your shortened link
+6. It would be great to allow for custom vanity urls

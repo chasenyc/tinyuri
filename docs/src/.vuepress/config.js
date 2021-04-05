@@ -35,11 +35,11 @@ module.exports = {
     nav: [
       {
         text: 'Guide',
-        link: '/guide/',
+        link: '/',
       }
     ],
     sidebar: {
-      '/guide/': [
+      '/': [
         {
           title: 'Guide',
           collapsable: false,
@@ -49,7 +49,9 @@ module.exports = {
             'mvp_code',
             'basic_style',
             'first_feature',
-            'cleanup'
+            'cleanup',
+            'users',
+            'relationships'
           ]
         }
       ],

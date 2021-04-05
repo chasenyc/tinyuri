@@ -219,7 +219,7 @@ public function test_we_create_a_url_record()
 with this new list we are creating 10 urls before our user creates one, let's see if our test still passes.
 
 ```sh
-Failed asserting that 'c' matches expected 12.
+Failed asserting that 'c' matches expected 11.
 ```
 
 Now that our test is working as expected, and failing, let's fix it. Now if we run our server and create enough records to get past `id` 10 we should see something like this:

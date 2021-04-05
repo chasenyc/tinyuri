@@ -76,7 +76,7 @@ we now will display when there is an error returned from validation. We've gone 
 ```
 And if we now test a bad url with our server we should see the following:
 
-<img :src="$withBase('/009_error_message.png')" alt="error message">
+<img :src="$withBase('/09_error_message.png')" alt="error message">
 
 ## Moving logic out of the controller
 
@@ -122,4 +122,4 @@ public function rules()
 
 Let's also remove the `authorize()` function for now as we are not utilizing any authorization for the moment. If we run the tests again they should still pass. We now have a specific file dedicated to validating user input, we have a lean controller and we have a better functioning product.
 
-Next up, lets tackle allowing users to create custom vanity urls.
+Next up, lets tackle creating users who can keep track of their shortened links.
