@@ -26,7 +26,16 @@ class Url extends Model
         return $query->where('id', $id);
     }
 
-    private function base62($num) {
+    /**
+     * Gets the owner of this url
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    private function base62($num) 
+    {
         $res = '';
 
         do {
@@ -37,7 +46,8 @@ class Url extends Model
         return $res;
     }
 
-    private function to10($num) {
+    private function to10($num) 
+    {
         $limit = strlen($num);
         $res = strpos(Url::BASE, $num[0]);
 

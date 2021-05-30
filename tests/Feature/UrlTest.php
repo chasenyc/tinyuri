@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Url;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -45,5 +46,22 @@ class UrlTest extends TestCase
         $url->save();
         $response = $this->get(route('shortened', $url->base62id()));
         $response->assertRedirect($url->url);
+    }
+
+    public function test_a_logged_in_user_has_url_tied_to_them()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $url = 'https://www.google.com';
+        $response = $this->post('/url', ['url' => $url]);
+
+        $this->assertDatabaseHas('urls', [
+            'url' => $url,
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertEquals(1, $user->urls()->count());
     }
 }

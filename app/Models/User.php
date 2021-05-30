@@ -40,4 +40,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the urls a user has created.
+     */
+    public function urls()
+    {
+        return $this->hasMany(Url::class);
+    }
 }
