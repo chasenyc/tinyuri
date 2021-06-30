@@ -1,4 +1,4 @@
-# MVP Designs
+# Planning
 Before we hope straight into coding it is important to first figure out what we are trying to create and how we might want to achieve those goals. I find the best way to do some basic system design is to start with the end user MVP state and work your way from the user interactions to the API supporting it to the underlying data models.
 
 With a URL shortener there are two immediate interactions that jump out as crucial MVP features. The ability to create a shortened url and the ability to visit a shortened url and be redirected to the correct location.

@@ -1,4 +1,4 @@
-# Base styling
+# Basic styling
 
 In this section we are just going to be adding the most basic stying to our website. We are not going to be doing any major designs or anything fancy but we want to just make the site look a little more like an actual site
 

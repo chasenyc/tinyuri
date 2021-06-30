@@ -1,5 +1,5 @@
 ## Creating A URL Shortener
 
-1. [Setting up workspace](/guide/setting_up.md)
-2. [Defining and designing MVP](mvp_design.md)
-3. [Building the MVP](mvp_code.md)
+This is an in depth guide into building a url shortener using [Laravel](https://www.laravel.com). This will be used both to teach how to plan and execute a full stack project as well as be a primer to building robust web applications with Laravel.
+
+[Get started](/setting_up.html)

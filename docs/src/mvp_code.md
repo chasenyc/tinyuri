@@ -1,5 +1,5 @@
 # Getting Started with Code
-## Creating the model
+## Creating our first model
 The first thing we are going to want to do is make our data model, like most modern frameworks, Laravel comes with some very robust database migration tools. You can read more about database migrations and how to use them [here](laravel.com/docs/8.x/migrations). So our first and only table right now is going to be the `urls` table and we will create it by using the `php artisan` command:
 
 ```sh
