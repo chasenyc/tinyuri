@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Hash;
 use App\Models\User;
+use App\Models\Url;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -68,5 +69,18 @@ class UsersTest extends TestCase
         $this->assertAuthenticated();
         $this->post(route('logout'));
         $this->assertGuest();
+    }
+
+    public function test_a_user_can_see_all_of_their_urls()
+    {
+        $user = User::factory()->create();
+
+        $urls = Url::factory()->count(10)->create(['user_id' => $user->id]);
+        $this->actingAs($user);
+
+        $response = $this->get(route('user.urls'));
+
+        $response->assertStatus(200)
+            ->assertSeeText(route('shortened', $urls->last()->base62id()));
     }
 }

@@ -23,6 +23,9 @@
                 </li>
                 @else
                 <li class="pr-5 underline">
+                    <a href="{{ route('user.urls') }}">Links</a>
+                </li>
+                <li class="pr-5 underline">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
 

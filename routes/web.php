@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UrlController;
+use App\Http\Controllers\UserUrlsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,10 @@ Route::middleware(['unauthed'])->group(function () {
     Route::post('/register', [RegisterController::class, 'store'])->name('register');
     Route::get('/login', [LoginController::class, 'create'])->name('session.create');
     Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/links', [UserUrlsController::class, 'index'])->name('user.urls');
 });
 
 Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
